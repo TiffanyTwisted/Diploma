@@ -10,7 +10,9 @@ const pool = new Pool({
 });
 */
 module.exports = new Sequelize(
-    'diplomadb','postgres', 'diploma',{
+    'diplomadb',                // database
+    'postgres',                 // user
+    'diploma',{                 // password
         dialect : 'postgres',
         host: 'localhost',
         port: 5432
