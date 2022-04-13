@@ -20,34 +20,11 @@ const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: {
-                msg: "Invalid email. Provide a correct email."
-            },
-            async isUnique(value) {
-                const user = await User.findOne({
-                    where: {
-                        email: value
-                    }
-                });
-                if (user) {
-                    throw new Error("A user with that email already exists.");
-                }
-            }
-        }
+        unique: true
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            len: {
-                args: [
-                    6, 100
-                ],
-                msg: "Password should be more than 5 characters."
-            }
-        }
+        allowNull: false
     },
     roles: {
         type: DataTypes.STRING,
@@ -82,6 +59,10 @@ const Course = sequelize.define('Course', {
     },
     course_description: {
         type: DataTypes.STRING
+    },
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
@@ -96,6 +77,10 @@ const School = sequelize.define('School', {
     },
     school_description: {
         type: DataTypes.STRING
+    },
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
@@ -113,6 +98,10 @@ const SchoolTeacher = sequelize.define('SchoolTeacher', {
     },
     last_name: {
         type: DataTypes.STRING
+    }, 
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
@@ -127,6 +116,10 @@ const Event = sequelize.define('Event', {
     },
     event_description: {
         type: DataTypes.STRING
+    },
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
