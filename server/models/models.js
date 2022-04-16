@@ -123,25 +123,7 @@ const Event = sequelize.define('Event', {
     }
 });
 
-// References
-  User.beforeCreate(async user => {
-    try {
-      user.password = await bcrypt.hash(user.password, 8);
-    } catch (error) {
-      throw new Error(error.message, "Something went wrong");
-    }
-  });
-
-  User.beforeUpdate(async user => {
-    try {
-      if (user.password) {
-        user.password = await bcrypt.hash(user.dataValues.password, 8);
-      }
-    } catch (error) {
-      throw new Error("Could not update the password");
-    }
-  });
-
+// Reference
 User.hasMany(CourseUser)
 CourseUser.belongsTo(User)
 

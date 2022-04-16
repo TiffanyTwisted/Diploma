@@ -1,59 +1,71 @@
 const ApiError = require('../error/ApiError');
 const jwt = require('jsonwebtoken');
 const {User} = require('../models/models');
-const { json } = require('express/lib/response');
+const {json} = require('express/lib/response');
+const bcrypt = require('bcrypt');
 
+const generateJWT = (id, email) => {
+   return  jwt.sign({id, email}, process.env.SECRET_KEY, { expiresIn : '24h' })
+}
 
 class userController {
     async registration(req, res, next) {
-        try{
-        const {
-            email,
-            password
-        } = req.body
-        if (!email || !password) {
-            return next(ApiError.badRequest('Некорректный Email или Password'))
-        }
-        const user = await User.create({
-            email,
-            password
-        })
-        return res.json({user})
-    } catch (error) {
-        next(ApiError.badRequest(error.message))
-    }
-        
+        try {
+            const {
+                first_name,
+                middle_name,
+                last_name,
+                email,
+                password,
+                role
+            } = req.body
+            // Checks 
+            if (!email || !password) {
+                return next(ApiError.badRequest('Некорректный Email или Password'))
+            }
 
-        /*
-        // check user exists
-        let candidate = await User.findOne({where: {
-                email
-            }})
-        if (candidate) {
-            return next(ApiError.badRequest('Пользовательно с таким email уже существует'))
+            let candidate = await User.findOne({where: {
+                    email
+                }})
+
+            if (candidate) {
+                return next(ApiError.badRequest('Пользовательно с таким email уже существует'))
+            }
+
+            const hashPassword = await bcrypt.hash(password,5);
+            const user = await User.create({
+                first_name,
+                middle_name,
+                last_name,
+                email,
+                password : hashPassword,
+                role
+            })
+
+            const token = generateJWT(user.id, user.email)
+
+            return res.json({token})
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
         }
-        const user = await User.create({
-            email,
-            password: hashPassword
-        });
-        return res.json({user})*/
-      /*  "first_name": "Sasha",
-        "middle_name": "-",
-        "last_name": "Pupkin",
-        "role":"student"
-        const token = jwt.sign({ id: user.id, email},   //payload
-                                process.env.SECRET_KEY, // salt
-                                {expiresIn: '24h'});    // other options
-        return res.json({token})*/
-      
     }
-    async login(req, res) {}
-    async check(req, res, next) {
-        const {id} = req.query
-        if (!id) {
-            return next(ApiError.badRequest('Не задан ID'))
+    async login(req, res, next) {
+        const {email, password} = req.body;
+        const user = await User.findOne({where : {email}});
+        if (!user){
+            next(ApiError.internal("Пользователь не найден"))
         }
-        res.json(id)
+        let comparePasswords = bcrypt.compareSync(password, user.password);
+        if(!comparePasswords){
+            next(ApiError.internal("Указан неверный пароль"))
+        }
+        const token = generateJWT(user.id, user.email);
+        return res.json({token})
+
+    }
+    async check(req, res, next) {
+        const token = generateJWT(req.user.id, req.user.email)
+        return res.json({token})
     }
 }
 

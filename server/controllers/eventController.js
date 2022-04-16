@@ -25,9 +25,7 @@ class eventController {
         let offset = page * limit - limit;
 
         if (SchoolId) {
-            events = await Event.findAndCountAll({where: {
-                    SchoolId
-                }, limit, offset})
+            events = await Event.findAndCountAll({where: { SchoolId }, limit, offset})
         } else {
             events = await Event.findAndCountAll({limit, offset})
         }
