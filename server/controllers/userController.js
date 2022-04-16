@@ -4,8 +4,8 @@ const {User} = require('../models/models');
 const {json} = require('express/lib/response');
 const bcrypt = require('bcrypt');
 
-const generateJWT = (id, email) => {
-   return  jwt.sign({id, email}, process.env.SECRET_KEY, { expiresIn : '24h' })
+const generateJWT = (id, email, role) => {
+   return  jwt.sign({id, email, role}, process.env.SECRET_KEY, { expiresIn : '24h' })
 }
 
 class userController {
@@ -42,7 +42,7 @@ class userController {
                 role
             })
 
-            const token = generateJWT(user.id, user.email)
+            const token = generateJWT(user.id, email, role)
 
             return res.json({token})
         } catch (error) {
@@ -59,12 +59,12 @@ class userController {
         if(!comparePasswords){
             next(ApiError.internal("Указан неверный пароль"))
         }
-        const token = generateJWT(user.id, user.email);
+        const token = generateJWT(user.id, user.email, user.role);
         return res.json({token})
 
     }
     async check(req, res, next) {
-        const token = generateJWT(req.user.id, req.user.email)
+        const token = generateJWT(req.user.id, req.user.email, req.user.role)
         return res.json({token})
     }
 }

@@ -25,7 +25,9 @@ class schoolController {
     }
     async getSchoolByID(req, res) {
         const {id} = req.params
-        const school = await School.findOne({where: { id }})
+        const school = await School.findOne({where: {
+                id
+            }})
         return res.json(school)
     }
     async updateSchoolInfo(req, res, next) {}
