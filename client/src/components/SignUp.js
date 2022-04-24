@@ -13,6 +13,8 @@ import Container from "@material-ui/core/Container";
 
 import styles from "../styles/SignUpIn.css.js";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
+import { LOGIN_ROUTE } from "../utills/constants.js";
 
 export default function SignUp() {
   return (
@@ -112,7 +114,7 @@ export default function SignUp() {
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/" variant="body2">
-               Уже есть аккаунт? Авторизация
+               Уже есть аккаунт? <NavLink to={LOGIN_ROUTE}>Авторизация</NavLink>
               </Link>
             </Grid>
           </Grid>

@@ -1,18 +1,18 @@
 import React from 'react';
 import { Container, Form } from 'react-bootstrap';
 import Card from "react-bootstrap/Card"
-import SignIn from '../components/SignIn';
+import SignUp from '../components/SignUp';
 
-const Auth = ( ) => {
+const Registration = ( ) => {
         return (
             <Container
              className="d-flex justify-content-center align-items-center"
              style={{height: window.innerHeight- 54}}>
                 <Card style={{width:600}} className="p-5">
-                   <SignIn/>
+                   <SignUp/>
                 </Card>
             </Container>
         )
 }
 
-export default Auth;
+export default Registration;

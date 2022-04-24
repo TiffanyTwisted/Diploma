@@ -15,6 +15,8 @@ import { Alert } from "@material-ui/lab";
 import styles from "../styles/SignUpIn.css.js";
 import axios from "axios";
 import { Snackbar } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
+import { REGISTRATION_ROUTE } from "../utills/constants.js";
 
 export default function SignIn(props) {
   return (
@@ -64,9 +66,9 @@ export default function SignIn(props) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/signup" variant="body2">
-                У вас нет аккаунта? Зарегистрируйтесь
-              </Link>
+              <div  variant="body2">
+                У вас нет аккаунта?  <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь</NavLink> 
+              </div>
             </Grid>
           </Grid>
         </form>
