@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,8 +17,31 @@ import axios from "axios";
 import { Snackbar } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { REGISTRATION_ROUTE } from "../utills/constants.js";
+import { login } from "../http/userAPI.js";
 
 export default function SignIn(props) {
+
+  let history = useNavigate();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const onChange = (e) => {
+    switch (e.target.type) {
+      case "text":
+        setEmail(e.target.value);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const click = async() => {
+    const response = await login(email, password);
+    console.log({response})
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -40,6 +63,8 @@ export default function SignIn(props) {
                 label="Email address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={onChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -51,7 +76,9 @@ export default function SignIn(props) {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
                 autoComplete="current-password"
+                onChange={onChange}
               />
             </Grid>
           </Grid>
@@ -61,9 +88,10 @@ export default function SignIn(props) {
             variant="contained"
             color="primary"
             style={styles.submit}
+            onClick = {click}
           >
             Вход
-          </Button>
+          </Button >
           <Grid container justify="flex-end">
             <Grid item>
               <div  variant="body2">

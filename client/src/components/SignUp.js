@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -15,8 +15,48 @@ import styles from "../styles/SignUpIn.css.js";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { LOGIN_ROUTE } from "../utills/constants.js";
+import { registration } from "../http/userAPI.js";
 
 export default function SignUp() {
+  let history = useNavigate();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [cpassword, setCpassword] = useState();
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [mname, setMname] = useState("");
+
+  const onChange = (e) => {
+    switch (e.target.name) {
+      case "email":
+        setEmail(e.target.value);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        break;
+      case "cpassword":
+        setCpassword(e.target.value);
+        break;
+      case "firstName":
+        setFname(e.target.value);
+        break;
+      case "lastName":
+        setLname(e.target.value);
+        break;
+      case "middleName":
+        setMname(e.target.value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const click = async() => {
+    const response = await registration(email, password, fname, mname, lname, cpassword);
+    console.log({response})
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -37,6 +77,8 @@ export default function SignUp() {
                 id="email"
                 label="Email address"
                 name="email"
+                value={email}
+                onChange={onChange}
                 autoComplete="email"
                 inputProps={{ maxLength: 40 }}
               />
@@ -48,8 +90,10 @@ export default function SignUp() {
                 fullWidth
                 name="password"
                 label="Password"
+                onChange={onChange}
                 type="password"
                 id="password"
+                value={password}
                 autoComplete="current-password"
                 inputProps={{ maxLength: 30 }}
               />
@@ -62,7 +106,9 @@ export default function SignUp() {
                 name="cpassword"
                 label="Confirm password"
                 type="password"
+                onChange={onChange}
                 id="cpassword"
+                value={cpassword}
                 autoComplete="current-password"
                 inputProps={{ maxLength: 30 }}
               />
@@ -74,6 +120,8 @@ export default function SignUp() {
                 variant="outlined"
                 fullWidth
                 id="firstName"
+                value={fname}
+                onChange={onChange}
                 label="First name"
                 autoFocus
                 inputProps={{ maxLength: 15 }}
@@ -86,7 +134,9 @@ export default function SignUp() {
                 id="middleName"
                 label="Middle name"
                 name="middleName"
+                onChange={onChange}
                 autoComplete="mname"
+                value={mname}
                 inputProps={{ maxLength: 15 }}
               />
             </Grid>
@@ -98,6 +148,8 @@ export default function SignUp() {
                 label="Last name"
                 name="lastName"
                 autoComplete="lname"
+                value={lname}
+                onChange={onChange}
                 inputProps={{ maxLength: 15 }}
               />
             </Grid>
@@ -108,8 +160,9 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             style={styles.submit}
+            onClick={click}
           >
-            Sign Up
+            Зарегистрировать
           </Button>
           <Grid container justify="flex-end">
             <Grid item>

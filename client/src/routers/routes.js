@@ -9,6 +9,8 @@ import {ADMIN_ROUTE, EVENT_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE, S
 import Registration from "../pages/Registration"
 import EventsPage from "../pages/EventsPage"
 import EventItemPage from "../pages/EventItemPage"
+import SignUp from "../components/SignUp"
+import SignIn from "../components/SignIn"
 
 export const authRoutes = [{
         path: ADMIN_ROUTE,
@@ -26,7 +28,7 @@ export const publicRoutes = [
     },
     {
         path: REGISTRATION_ROUTE, 
-        Component:  Registration
+        Component:  Auth
     },
     {
         path: SCHOOL_ROUTE, 
