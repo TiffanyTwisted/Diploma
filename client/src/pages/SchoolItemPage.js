@@ -1,9 +1,24 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Container, Row, Col } from 'react-bootstrap';
+import { useLocation, useParams } from 'react-router-dom';
 import MenuBar from '../components/Menu';
-
+import {Context} from '../index';
+import CourseList from '../components/CourseList';
+import SchoolItem from '../components/SchoolItem'
+import {
+    Card,
+    CardBody,
+    CardImg,
+    CardText,
+    CardTitle,
+  } from "reactstrap";
 
 const SchoolItemPage = ( ) => {
+    const {school} = useContext(Context)
+
+    const school_id = useParams()  // return school id from URL
+    const schoolItem = school.getSchoolById(school_id.id)[ school_id.id-1 ] // always the first one 
+
         return (
             <Container>
             <Row className='mt-3'>
@@ -11,8 +26,37 @@ const SchoolItemPage = ( ) => {
                     <MenuBar/>
                 </Col>
                 <Col md={9}>
-                    
-    
+                 <Row>  <Card style={
+                    {
+                        cursor: 'pointer',
+                        width: 850,
+                        height: 400,
+                        borderRadius: 20
+                    }
+                }
+                boreder={"light"}
+                className='mt-3'>
+                  { schoolItem.img  ?
+                <CardImg width={250}
+                    height={200}
+                    src={
+                        schoolItem.img
+                    }/> : 
+                    <CardImg width={250}
+                    height={200}
+                    src='//demos.wrappixel.com/free-admin-templates/react/materialpro-react-free/main/static/media/user4.6ac95ef9.jpg'/> 
+                }
+                <CardBody className="p-4">
+                    <CardTitle tag="h5">
+                        {
+                        schoolItem.school_name
+                    }</CardTitle>
+                    <CardText>{
+                        schoolItem.school_description
+                    }</CardText>
+                </CardBody>
+            </Card> </Row>   
+                 <Row> <CourseList school_id={school_id} /></Row>
                 </Col>
             </Row>
         </Container>

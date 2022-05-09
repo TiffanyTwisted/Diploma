@@ -30,7 +30,9 @@ class schoolController {
             }})
         return res.json(school)
     }
-    async updateSchoolInfo(req, res, next) {}
+    async updateSchoolInfo(req, res, next) {
+        
+    }
     async deleteSchool(req, res) {}
 }
 

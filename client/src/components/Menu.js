@@ -7,13 +7,13 @@ import { NavLink } from "react-router-dom";
 const MenuBar = observer(( ) => {
     const {school} = useContext(Context);
     return (
-    <ListGroup className='mt-3'>  
+    <ListGroup className='mt-3 border border-primary rounded-top'>  
         { school.menuitems.map(menuitem => 
         <NavLink to={menuitem.path} activeStyle={{
             fontWeight: "bold",
             color: "white"
           }} style={{ textDecoration: 'none'}}>
-       <ListGroup.Item 
+       <ListGroup.Item action
        style={{cursor:'pointer'}}
        variant = "primary"
        active = { menuitem.id === school.selectedItem.id}

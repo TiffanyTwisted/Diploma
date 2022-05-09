@@ -20,6 +20,9 @@ const Auth = observer(() => {
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [first_name, setFirstName ] = useState();
+    const [middle_name, setMiddleName ] = useState();
+    const [last_name, setLastName ] = useState();
 
     const click = async () => {
         try {
@@ -28,7 +31,7 @@ const Auth = observer(() => {
                 data = await login(email, password)
                 console.log(data)
             } else {
-                data = await registration(email, password)
+                data = await registration(email, password, first_name, middle_name, last_name)
                 console.log(data)
             }
             console.log(user)
@@ -49,7 +52,8 @@ const Auth = observer(() => {
                 }
         }>
             <Card style={
-                    {width: 600}
+                    {width: 600,
+                     borderRadius: 20 }
                 }
                 className="p-5">
                 <div className='d-flex flex-column align-items-center'>
@@ -76,7 +80,13 @@ const Auth = observer(() => {
                             type='password'
                             onChange={
                                 e => setPassword(e.target.value)
-                        }></Form.Control>
+                        }
+                        onKeyPress={event => {
+                            if (event.key === 'Enter') {
+                                click()
+                            }
+                          }}
+                          ></Form.Control>
                     </> : <>
                         <Form.Control className='mt-3' placeholder="Email address"
                             value={email}
@@ -90,9 +100,18 @@ const Auth = observer(() => {
                                 e => setPassword(e.target.value)
                         }></Form.Control>
                         <div className='d-flex justify-content-around'>
-                            <Form.Control className='mt-3' placeholder="First Name"></Form.Control>
-                            <Form.Control className='mt-3' placeholder="Middle Name"></Form.Control>
-                            <Form.Control className='mt-3' placeholder="Last Name"></Form.Control>
+                            <Form.Control className='mt-3' placeholder="First Name"
+                              value={first_name}
+                              onChange={
+                                  e => setFirstName(e.target.value) }></Form.Control>
+                            <Form.Control className='mt-3' placeholder="Middle Name"
+                             value={middle_name}
+                             onChange={
+                                 e => setMiddleName(e.target.value) }></Form.Control>
+                            <Form.Control className='mt-3' placeholder="Last Name"
+                             value={last_name}
+                             onChange={
+                                 e => setLastName(e.target.value) }></Form.Control>
                         </div>
                     </>
                 } </Form>
@@ -100,7 +119,7 @@ const Auth = observer(() => {
                     {
                     isLogin ? <div>
                         У вас нет аккаунта?
-                        <NavLink to={REGISTRATION_ROUTE}>
+                        <NavLink to={REGISTRATION_ROUTE} className="text-decoration-none">
                             Зарегистрируйтесь</NavLink>
                     </div> : <div>
                         Есть аккаунт?
@@ -112,7 +131,7 @@ const Auth = observer(() => {
                         className="mt-2"
                         onClick={click}
                         color="primary">
-                        Вход
+                        Далее
                     </Button>
                 </div>
             </Card>

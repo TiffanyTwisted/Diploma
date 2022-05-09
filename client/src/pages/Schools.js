@@ -1,12 +1,19 @@
 import MenuBar from '../components/Menu';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Col, Container, Row} from 'react-bootstrap';
 import SchoolList from '../components/SchoolList';
+import {Context} from '../index';
+import { fetchSchools } from '../http/schoolApi';   
+import {observer} from "mobx-react-lite";
 
-const SchoolPage = ( ) => {
+const SchoolPage = observer(( ) => {
+    const {school} = useContext(Context)
+    useEffect(()=>{
+        fetchSchools( ).then(data => school.setSchool(data))
+    }, [])
         return (
             <Container>
-              <Row className="mt-2">
+              <Row className="mt-3">
                   <Col md={3}>
                       <MenuBar/>
                   </Col>
@@ -18,6 +25,6 @@ const SchoolPage = ( ) => {
             </Container>
         );
 
-}
+} )
 
 export default SchoolPage;

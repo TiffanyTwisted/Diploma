@@ -15,6 +15,9 @@ export default {
     color: "white",
     marginLeft:theme.spacing(2),
   },
+  header:{
+    marginRight:100,
+  },
   navbar: {
     backgroundColor: "#5c6bc0",
   },
