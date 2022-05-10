@@ -19,7 +19,6 @@ const CourseItem = ({course}) => {
                     {
                         width: 350,
                         cursor: 'pointer',
-                        height: 400,
                         borderRadius: 20
                     }
                 }
@@ -29,7 +28,7 @@ const CourseItem = ({course}) => {
                 <CardImg width={250}
                     height={200}
                     src={
-                        course.img
+                        process.env.REACT_APP_API_URL + course.img
                     }/>
                     : 
                     <CardImg width={250}

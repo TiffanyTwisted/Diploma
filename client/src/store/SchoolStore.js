@@ -62,6 +62,7 @@ export default class SchoolStore {
             }
         ]
         this._selectedItem = {}
+        this._selectedSchool = {}
         makeAutoObservable(this);
     }
 
@@ -83,6 +84,10 @@ export default class SchoolStore {
 
     setSelectedItem(item) {
         this._selectedItem = item;
+    }
+
+    setSelectedSchool(school) {
+        this._selectedSchool = school;
     }
 
     getSchoolById(id) {
@@ -122,4 +127,9 @@ export default class SchoolStore {
     get selectedItem() {
         return this._selectedItem
     }
+
+    get selectedSchool() {
+        return this._selectedSchool
+    }
+
 }

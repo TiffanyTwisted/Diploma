@@ -19,3 +19,8 @@ export const check = async () => {
     localStorage.setItem("token", data.token)
     return jwt_decode(data.token)
 }
+
+export const readUserInfo = async(email) =>{
+    const {data} = await $host.post('api/user/info', {email})
+    return data
+}

@@ -1,9 +1,9 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Container, Row, Col } from 'react-bootstrap';
 import { useLocation, useParams } from 'react-router-dom';
 import MenuBar from '../components/Menu';
 import {Context} from '../index';
-import CourseList from '../components/CourseList';
+import { fetchOneCourse } from '../http/courseApi';  
 import {Button} from "react-bootstrap"
 import {
     Card,
@@ -13,13 +13,27 @@ import {
     CardTitle,
   } from "reactstrap";
   import {observer} from 'mobx-react-lite';
+  import { createRecord } from '../http/courseApi'; 
 
 const CourseItemPage = observer( ( ) => {
  const {school} = useContext(Context)
- const {user} = useContext(Context)
+ const {user}   = useContext(Context)
+ const user_id = user.user.id
  const course_id = useParams()  // return course id from URL
- const courseItem = school.getCourseById(course_id.id)[ course_id.id-1 ] // always the first one
+ const [courseItem, setCourseItem] = useState({ })
 
+ const addRecord = () =>{
+    const formData = new FormData()
+    console.log(user_id, Number( course_id.id ) )
+    formData.append('UserId', user_id )
+    formData.append('CourseId', course_id.id )
+    createRecord(formData).then( data => console.log("Новая запись создалась"))
+ }
+
+    useEffect(()=>{
+        fetchOneCourse( course_id.id ).then(data => setCourseItem(data))
+    }, [])
+    
         return (
             <Container>
             <Row className='mt-3'>
@@ -38,10 +52,10 @@ const CourseItemPage = observer( ( ) => {
                 boreder={"light"}
                 className='mt-3'>
                   { courseItem.img  ?
-                <CardImg width={250}
+                <CardImg 
                     height={200}
                     src={
-                        courseItem.img
+                       process.env.REACT_APP_API_URL+ courseItem.img
                     }/> : 
                     <CardImg width={250}
                     height={200}
@@ -57,7 +71,7 @@ const CourseItemPage = observer( ( ) => {
                     }</CardText>
                      {
                       user.isAuth ? 
-                     <Button variant="info">Записаться на курс</Button>
+                     <Button variant="info" onClick={addRecord}>Записаться на курс</Button>
                      : 
                      <div></div> }
                 </CardBody>

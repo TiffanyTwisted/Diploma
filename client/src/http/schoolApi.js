@@ -10,3 +10,8 @@ export const fetchSchools = async ( ) => {
     const {data} = await $host.get('api/school')
     return data
 }
+
+export const fetchOneSchool = async ( id ) => {
+    const {data} = await $host.get('api/school/'+ id )
+    return data
+}

@@ -32,7 +32,7 @@ const SchoolItem = ({school}) => {
                 <CardImg width={250}
                     height={200}
                     src={
-                        school.img
+                        process.env.REACT_APP_API_URL + school.img
                     }/>
                 <CardBody className="p-4">
                     <CardTitle tag="h5">

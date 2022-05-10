@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react';
+import React,{useContext, useState, useEffect} from 'react';
 import { Col, Container, Row} from 'react-bootstrap';
 import {Context} from '../index.js';
 import {
@@ -11,19 +11,23 @@ import {
 import { Upload } from './UploadImg.js';
 import Image from 'react-bootstrap/Image';
 import { observer } from 'mobx-react-lite';
+import { readUserInfo } from '../http/userAPI';  
 
 const ProfilePage = observer( () => {
+    const [userInfo, setUserInfo] = useState({ })
     const {user} = useContext(Context);
     const photoLink = user.photo
     console.log(user)
 
+    useEffect(()=>{
+      readUserInfo( user.email ).then(data => setUserInfo(data) )
+  }, [])
+
     return (
         <Container>
            <Card>
-                <CardImg 
-                  height={250}
-                  src="http://storge.pic2.me/c/1360x800/386/5834c93d71c5f.jpg" />
-                 <Image 
+             <div className='d-flex justify-content-center'>
+                 <Image className='mt-3'
                   style={ 
                   { width : 150,
                    heigth : 150,
@@ -31,7 +35,11 @@ const ProfilePage = observer( () => {
                    borderColor:'white'}
                  }
                  src="https://demos.wrappixel.com/free-admin-templates/react/materialpro-react-free/main/static/media/user4.6ac95ef9.jpg"/>
+                 </div>
                  <CardTitle>{user.first_name}</CardTitle>
+                 <CardBody>
+
+                 </CardBody>
            </Card>
         </Container>
     );

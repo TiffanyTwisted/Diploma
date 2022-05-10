@@ -1,10 +1,10 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Container, Row, Col } from 'react-bootstrap';
 import { useLocation, useParams } from 'react-router-dom';
 import MenuBar from '../components/Menu';
 import {Context} from '../index';
 import CourseList from '../components/CourseList';
-import SchoolItem from '../components/SchoolItem'
+import { fetchOneSchool } from '../http/schoolApi';   
 import {
     Card,
     CardBody,
@@ -14,11 +14,14 @@ import {
   } from "reactstrap";
 
 const SchoolItemPage = ( ) => {
+    const [schoolItem, setSchoolItem] = useState({ })
     const {school} = useContext(Context)
-
     const school_id = useParams()  // return school id from URL
-    const schoolItem = school.getSchoolById(school_id.id)[ school_id.id-1 ] // always the first one 
 
+    useEffect(()=>{
+        fetchOneSchool( school_id.id ).then(data => setSchoolItem(data))
+    }, [])
+    
         return (
             <Container>
             <Row className='mt-3'>
@@ -40,7 +43,7 @@ const SchoolItemPage = ( ) => {
                 <CardImg width={250}
                     height={200}
                     src={
-                        schoolItem.img
+                       process.env.REACT_APP_API_URL + schoolItem.img
                     }/> : 
                     <CardImg width={250}
                     height={200}

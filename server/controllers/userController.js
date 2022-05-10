@@ -67,6 +67,15 @@ class userController {
         const token = generateJWT(req.user.id, req.user.email, req.user.role)
         return res.json({token})
     }
+
+    async readUserInfo (req, res) {
+        const {email} = req.body;
+        const user = await User.findOne({where : {email}});
+        if (!user){
+            next(ApiError.internal("Пользователь не найден"))
+        }
+        return res.json({user})
+    }
 }
 
 module.exports = new userController()

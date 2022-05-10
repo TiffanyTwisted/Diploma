@@ -31,7 +31,29 @@ class schoolController {
         return res.json(school)
     }
     async updateSchoolInfo(req, res, next) {
-        
+        try { // Constants
+            const {school_description} = req.body;
+            const {id} = req.params
+            const {img} = req.files;
+            let fileName = uuid.v4() + ".jpg"
+            img.mv(path.resolve(__dirname, '..', 'static', fileName))
+
+            const school = await School.update({
+                school_description,
+                img: fileName
+            }, {where: {
+                    id
+                }})
+            const updatedSchool = await School.findOne({where: {
+                    id
+                }})
+
+            return res.json(updatedSchool)
+
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+
     }
     async deleteSchool(req, res) {}
 }
