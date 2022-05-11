@@ -13,7 +13,7 @@ import {
     CardTitle,
   } from "reactstrap";
   import {observer} from 'mobx-react-lite';
-  import { createRecord } from '../http/courseApi'; 
+  import { createRecord } from '../http/recordAPI'; 
 
 const CourseItemPage = observer( ( ) => {
  const {school} = useContext(Context)

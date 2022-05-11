@@ -19,6 +19,7 @@ export default class SchoolStore {
                 SchoolId: 1
             }
         ]
+        this._records = []
         this._events = [
             {
                 id: 1,
@@ -82,6 +83,10 @@ export default class SchoolStore {
         this._menuitems = menuitems;
     }
 
+    setRecords(records){
+        this._records = records;
+    }
+
     setSelectedItem(item) {
         this._selectedItem = item;
     }
@@ -106,6 +111,10 @@ export default class SchoolStore {
             }
         })
         return courseItem
+    }
+
+    get records(){
+        return this._records
     }
 
     get schools() {

@@ -21,10 +21,3 @@ export const sortCoursesBySchoolId = async ( school_id ) => {
     console.log(data)
     return data
 }
-
-export const createRecord = async (record) => {
-    const {data} = await $host.post('api/course/record', record)
-    return data
-}
-
-

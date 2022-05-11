@@ -11,7 +11,8 @@ import {
 import { Upload } from './UploadImg.js';
 import Image from 'react-bootstrap/Image';
 import { observer } from 'mobx-react-lite';
-import { readUserInfo } from '../http/userAPI';  
+import { readUserInfo } from '../http/userAPI';
+import StatusTable from '../components/StatusTable'  
 
 const ProfilePage = observer( () => {
     const [userInfo, setUserInfo] = useState({ })
@@ -38,7 +39,7 @@ const ProfilePage = observer( () => {
                  </div>
                  <CardTitle>{user.first_name}</CardTitle>
                  <CardBody>
-
+                   <StatusTable/>
                  </CardBody>
            </Card>
         </Container>

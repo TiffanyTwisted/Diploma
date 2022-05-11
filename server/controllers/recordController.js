@@ -1,56 +1,10 @@
 const ApiError = require('../error/ApiError');
-const {Course, CourseUser} = require('../models/models');
+const { CourseUser} = require('../models/models');
 const uuid = require('uuid')
 const path = require('path')
 
-class courseController {
-    async createCourse(req, res) {
-        try {
-            const {course_name, course_description, SchoolId} = req.body;
-            const {img} = req.files;
-            let fileName = uuid.v4() + ".jpg"
-            img.mv(path.resolve(__dirname, '..', 'static', fileName))
-
-            const course = await Course.create({course_name, course_description, SchoolId, img: fileName});
-
-            return res.json(course)
-        } catch (error) {
-            next(ApiError.badRequest(error.message))
-        }
-    }
-    async getAllCourses(req, res) {
-        let {SchoolId, limit, page} = req.query; // query - find from search string
-        let courses;
-        page = page || 1;
-        limit = limit || 9;
-        let offset = page * limit - limit;
-
-        if (SchoolId) {
-            courses = await Course.findAndCountAll({where: {
-                    SchoolId
-                }, limit, offset})
-        } else {
-            courses = await Course.findAndCountAll({limit, offset})
-        }
-
-        return res.json(courses)
-    }
-    async getCourseByID(req, res) {
-        const {id} = req.params
-        const course = await Course.findOne({where: {
-                id
-            }})
-        return res.json(course)
-    }
-
-    async getCoursesBySchoolID(req, res) {
-        const {SchoolId} = req.params
-        const courses = await Course.findAll({where: {
-                SchoolId
-            }})
-        return res.json(courses)
-    }
-
+class recordController {
+   
     async createRecord(req, res, next) {
         try {
             const {UserId, CourseId} = req.body
@@ -65,8 +19,9 @@ class courseController {
     async getAllRecords(req, res, next) {
 
         try {
-            let {UserId, limit, page} = req.query; // query - find from search string
-            const {CourseId} = req.params
+            let { limit, page} = req.query; // query - find from search string
+            const {UserId,CourseId} = req.body
+            console.log(req)
             let records;
             page = page || 1;
             limit = limit || 9;
@@ -80,11 +35,21 @@ class courseController {
                     limit,
                     offset
                 })
+                console.log("Вызывается условие 1: всё есть")
             } else if (UserId && !CourseId) {
                 records = await CourseUser.findAndCountAll({where: {
                         UserId
                     }, limit, offset})
-            } else {  records = await CourseUser.findAndCountAll({ limit, offset}) } 
+                    console.log("Вызывается условие 2: только UserId")
+            } else if (!UserId && CourseId) {
+                records = await CourseUser.findAndCountAll({where: {
+                    CourseId
+                    }, limit, offset})
+                    console.log("Вызывается условие 3:только CourseId")
+            }
+            else {  records = await CourseUser.findAndCountAll({ limit, offset})
+            console.log("Вызывается условие 4: ничего нет")
+            } 
             return res.json(records)
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -117,7 +82,7 @@ class courseController {
 
     async changeStatusToApproved(req, res, next) {
         try {
-            const {CourseId, UserId} = req.params
+            const {CourseId, UserId} = req.body
 
             if (UserId && CourseId) {
                const record = await CourseUser.update({ 
@@ -141,7 +106,7 @@ class courseController {
 
     async changeStatusToCanceled(req, res, next) {
         try {
-            const {CourseId, UserId} = req.params
+            const {CourseId, UserId} = req.body
 
             if (UserId && CourseId) {
                const record = await CourseUser.update({ 
@@ -164,4 +129,4 @@ class courseController {
     }
 }
 
-module.exports = new courseController()
+module.exports = new recordController()

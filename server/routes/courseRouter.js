@@ -7,7 +7,11 @@ router.get('/',courseController.getAllCourses)
 router.get('/:id',courseController.getCourseByID)
 router.get('/?SchoolId='+':schoolid',courseController.getCoursesBySchoolID)
 router.post('/record',courseController.createRecord)
-router.get('/record',courseController.getAllRecords)
+router.get('/:id/record',courseController.getAllRecords)
+router.put('/:id/record/process',courseController.changeStatusToInProcess)
+router.put('/:id/record/approve',courseController.changeStatusToApproved)
+router.put('/:id/record/cancel',courseController.changeStatusToCanceled)
+
 
 
 module.exports = router
