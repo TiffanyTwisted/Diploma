@@ -13,7 +13,8 @@ import {
     CardTitle,
   } from "reactstrap";
   import {observer} from 'mobx-react-lite';
-  import { createRecord } from '../http/recordAPI'; 
+  import  CreateRecord from '../components/modals/CreateRecord'; 
+  import { createRecord } from '../http/recordAPI';
 
 const CourseItemPage = observer( ( ) => {
  const {school} = useContext(Context)
@@ -21,14 +22,7 @@ const CourseItemPage = observer( ( ) => {
  const user_id = user.user.id
  const course_id = useParams()  // return course id from URL
  const [courseItem, setCourseItem] = useState({ })
-
- const addRecord = () =>{
-    const formData = new FormData()
-    console.log(user_id, Number( course_id.id ) )
-    formData.append('UserId', user_id )
-    formData.append('CourseId', course_id.id )
-    createRecord(formData).then( data => console.log("Новая запись создалась"))
- }
+ const [recordVisible, setRecordVisible] = useState(false)
 
     useEffect(()=>{
         fetchOneCourse( course_id.id ).then(data => setCourseItem(data))
@@ -71,11 +65,18 @@ const CourseItemPage = observer( ( ) => {
                     }</CardText>
                      {
                       user.isAuth ? 
-                     <Button variant="info" onClick={addRecord}>Записаться на курс</Button>
+                     <Button variant="info" onClick={() => setRecordVisible(true)}>Записаться на курс</Button>
                      : 
                      <div></div> }
                 </CardBody>
-            </Card> </Row>   
+            </Card> 
+            <CreateRecord show={recordVisible}
+                onHide={
+                    () => setRecordVisible(false)
+                }
+                user_id={user_id}
+                course_id={Number( course_id.id )}/>
+            </Row>   
                 </Col>
             </Row>
         </Container>

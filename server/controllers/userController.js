@@ -8,6 +8,13 @@ const generateJWT = (id, email, role) => {
    return  jwt.sign({id, email, role}, process.env.SECRET_KEY, { expiresIn : '24h' })
 }
 
+const validateEmail = (email) =>{
+    console.log(process.env.EMAIL_REG)
+    if ( email.match( process.env.EMAIL_REG ) === false ){
+        return next(ApiError.badRequest('Некорректный Email'))
+    }
+}
+
 class userController {
     async registration(req, res, next) {
         try {
@@ -21,8 +28,14 @@ class userController {
             } = req.body
             // Checks 
             if (!email || !password) {
-                return next(ApiError.badRequest('Некорректный Email или Password'))
+                return next(ApiError.badRequest('Email или Password не могут быть пустыми'))
             }
+
+            if (!first_name || !last_name) {
+                return next(ApiError.badRequest('Имя и Фамилия не могут быть пустыми'))
+            }
+
+            validateEmail(email)
 
             let candidate = await User.findOne({where: {
                     email
@@ -69,8 +82,8 @@ class userController {
     }
 
     async readUserInfo (req, res) {
-        const {email} = req.body;
-        const user = await User.findOne({where : {email}});
+        const {id} = req.params
+        const user = await User.findOne({where : {id}});
         if (!user){
             next(ApiError.internal("Пользователь не найден"))
         }

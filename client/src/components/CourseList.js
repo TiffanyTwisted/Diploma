@@ -2,17 +2,14 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Row} from 'react-bootstrap';
 import {Context} from '../index';
 import CourseItem from './CourseItem'
-import { sortCoursesBySchoolId } from '../http/courseApi'; 
+import {fetchCourses} from '../http/courseApi';
 
 const CourseList = (school_id) => {
     const {school} = useContext(Context)
-  //  const [courses, setCourses] = useState( {} )
-    
- /*   useEffect(()=>{
-        sortCoursesBySchoolId( school_id ).then(data =>     setCourses(data.rows))
-        console.log(courses)
-    }, [])*/
 
+    useEffect(() => {
+        fetchCourses().then(data => school.setCourses(data.rows))
+    }, [])
 
     const courses = school.courses.map(item => {
         if (item.SchoolId == school_id.school_id.id) {

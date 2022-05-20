@@ -20,7 +20,7 @@ export const check = async () => {
     return jwt_decode(data.token)
 }
 
-export const readUserInfo = async(email) =>{
-    const {data} = await $host.post('api/user/info', {email})
+export const readUserInfo = async(id) =>{
+    const {data} = await $authHost.get('api/user/info' + '/'+ id)
     return data
 }

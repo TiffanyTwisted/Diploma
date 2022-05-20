@@ -12,7 +12,7 @@ export const fetchCourses = async ( ) => {
 }
 
 export const fetchOneCourse = async ( id ) => {
-    const {data} = await $host.get('api/course/'+id)
+    const {data} = await $host.get('api/course/'+ id)
     return data
 }
 

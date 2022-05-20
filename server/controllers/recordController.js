@@ -20,8 +20,7 @@ class recordController {
 
         try {
             let { limit, page} = req.query; // query - find from search string
-            const {UserId,CourseId} = req.body
-            console.log(req)
+            const {UserId,CourseId} = req.query
             let records;
             page = page || 1;
             limit = limit || 9;

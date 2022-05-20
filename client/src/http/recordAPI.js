@@ -21,8 +21,12 @@ export const changeStatusToCanceled = async (record) => {
     return data
 }
 
-export const fetchRecords = async(record) =>{
-    const {data} = await $host.get('api/record', record)
-    console.log("Вызывается из recordAPI", record, data )
+export const fetchRecordsByUserId = async(id) =>{
+    const {data} = await $host.get('api/record?UserId=' + id)
+    return data
+}
+
+export const fetchAllRecords = async() =>{
+    const {data} = await $host.get('api/record')
     return data
 }

@@ -23,6 +23,8 @@ const Auth = observer(() => {
     const [first_name, setFirstName ] = useState();
     const [middle_name, setMiddleName ] = useState();
     const [last_name, setLastName ] = useState();
+    const [showHide, show] = useState(false)
+    let error_text;
 
     const click = async () => {
         try {
@@ -39,7 +41,8 @@ const Auth = observer(() => {
             user.setIsAuth(true)
             navigate(MAIN_ROUTE)
         } catch (error) {
-            alert(error.response.data.message)
+            error_text = error.response.data.message
+            show(true)
         }
 
 
@@ -64,7 +67,7 @@ const Auth = observer(() => {
                     </Avatar>
                     <h2 className="m-auto">
                         {
-                        isLogin ? 'Авторизация' : 'Регистрация'
+                        isLogin ? 'Войти' : 'Регистрация'
                     }</h2>
                 </div>
                 <Form className='d-flex flex-column'>
@@ -100,19 +103,20 @@ const Auth = observer(() => {
                                 e => setPassword(e.target.value)
                         }></Form.Control>
                         <div className='d-flex justify-content-around'>
-                            <Form.Control className='mt-3' placeholder="First Name"
+                            <Form.Control className='mt-3' placeholder="Имя"
                               value={first_name}
                               onChange={
                                   e => setFirstName(e.target.value) }></Form.Control>
-                            <Form.Control className='mt-3' placeholder="Middle Name"
+                            <Form.Control className='mt-3' placeholder="Отчество"
                              value={middle_name}
                              onChange={
                                  e => setMiddleName(e.target.value) }></Form.Control>
-                            <Form.Control className='mt-3' placeholder="Last Name"
+                            <Form.Control className='mt-3' placeholder="Фамилия"
                              value={last_name}
                              onChange={
                                  e => setLastName(e.target.value) }></Form.Control>
                         </div>
+                        {  showHide  ? <p className='text-danger'>Ошибка</p> : <></>  }
                     </>
                 } </Form>
                 <div className="d-flex justify-content-between mt-3 align-items-center">
@@ -123,7 +127,7 @@ const Auth = observer(() => {
                             Зарегистрируйтесь</NavLink>
                     </div> : <div>
                         Есть аккаунт?
-                        <NavLink to={LOGIN_ROUTE}>Войдите</NavLink>
+                        <NavLink to={LOGIN_ROUTE} className="text-decoration-none pl-3">Войдите</NavLink>
                     </div>
                 }
                     <Button type="submit"

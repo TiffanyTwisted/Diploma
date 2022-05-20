@@ -20,6 +20,7 @@ const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
+        isEmail: true,    
         unique: true
     },
     password: {
@@ -123,9 +124,61 @@ const Event = sequelize.define('Event', {
     }
 });
 
+const News = sequelize.define('News', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    pretext: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }, 
+    title:{
+        type: DataTypes.STRING,
+        allowNull: true
+    }, 
+    summary:{
+        type: DataTypes.STRING,
+        allowNull: true
+    }, 
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
+});
+
+const EventUser = sequelize.define('EventUser', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    is_actived: {
+        type: DataTypes.STRING
+    }
+});
+
+const Biblio = sequelize.define('Biblio', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    title:{
+        type: DataTypes.STRING
+    }, 
+    file: {
+        type: DataTypes.STRING
+    }
+});
+
 // Reference
 User.hasMany(CourseUser)
 CourseUser.belongsTo(User)
+
+User.hasMany(EventUser)
+EventUser.belongsTo(User)
 
 Course.hasMany(CourseUser)
 CourseUser.belongsTo(Course)
@@ -136,14 +189,23 @@ Course.belongsTo(School)
 School.hasMany(Event)
 Event.belongsTo(School)
 
+Event.hasMany(EventUser)
+EventUser.belongsTo(Event)
+
 School.hasMany(SchoolTeacher)
 SchoolTeacher.belongsTo(School)
+
+School.hasMany(Biblio)
+Biblio.belongsTo(School)
 
 module.exports = {
     User,
     Course,
     CourseUser,
+    Biblio,
     Event,
+    News,
+    EventUser, 
     School,
     SchoolTeacher
 }

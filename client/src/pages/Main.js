@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import MenuBar from '../components/Menu';
 import {observer} from 'mobx-react-lite';
+import InfoComponent from '../components/InfoComponent';
 
 const MainPage = observer ( () => {
     return (<Container>
@@ -12,7 +13,7 @@ const MainPage = observer ( () => {
                 <MenuBar/>
             </Col>
             <Col md={9}>
-
+                <InfoComponent/>
             </Col>
         </Row>
     </Container>);

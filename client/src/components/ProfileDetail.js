@@ -18,10 +18,10 @@ const ProfilePage = observer( () => {
     const [userInfo, setUserInfo] = useState({ })
     const {user} = useContext(Context);
     const photoLink = user.photo
-    console.log(user)
 
+console.log(userInfo)
     useEffect(()=>{
-      readUserInfo( user.email ).then(data => setUserInfo(data) )
+      readUserInfo( user.user.id ).then(data => {setUserInfo(data) } )
   }, [])
 
     return (
@@ -37,8 +37,14 @@ const ProfilePage = observer( () => {
                  }
                  src="https://demos.wrappixel.com/free-admin-templates/react/materialpro-react-free/main/static/media/user4.6ac95ef9.jpg"/>
                  </div>
-                 <CardTitle>{user.first_name}</CardTitle>
+                 <CardTitle className='d-flex justify-content-center mt-2'><h3>
+                   {
+                     userInfo.user === undefined ? 
+                     'Name' : 
+                     userInfo.user.first_name + ' ' + userInfo.user.middle_name + ' ' + userInfo.user.last_name
+                   }</h3></CardTitle>
                  <CardBody>
+                   <h4>Мои заявки</h4>
                    <StatusTable/>
                  </CardBody>
            </Card>
