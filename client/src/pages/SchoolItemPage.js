@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import MenuBar from '../components/Menu';
 import {Context} from '../index';
 import CourseList from '../components/CourseList';
+import { Image } from 'react-bootstrap'; 
 import {observer} from "mobx-react-lite"
 import { fetchOneSchool } from '../http/schoolApi';   
 import {
@@ -30,17 +31,19 @@ const SchoolItemPage = observer( ( ) => {
                     <MenuBar/>
                 </Col>
                 <Col md={9}>
-                 <Row>  <Card style={
+                 <Row>  
+               <Card style={
                     {
                         cursor: 'pointer',
                         width: 850,
-                        height: 400,
                         borderRadius: 20
                     }
                 }
                 boreder={"light"}
                 className='mt-3'>
                 <CardBody className="p-4">
+                <Row className="mt-3">
+                        <Col>
                     <CardTitle tag="h5">
                         {
                         schoolItem.school_name
@@ -48,6 +51,20 @@ const SchoolItemPage = observer( ( ) => {
                     <CardText>{
                         schoolItem.school_description
                     }</CardText>
+                    </Col>
+                    <Col className='d-flex justify-content-center'>
+                    <Image width={300}
+                          height={250}
+                style={
+                    {
+                        borderRadius : 50
+                    }
+                }
+                src={
+                    process.env.REACT_APP_API_URL + schoolItem.img
+                } ></Image>
+                    </Col>
+                    </Row>
                 </CardBody>
             </Card> </Row>  
             <h4 className='mt-4'>Предлагаемые курсы</h4>     

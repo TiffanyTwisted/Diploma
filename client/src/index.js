@@ -5,13 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import UserStore from './store/UserStore';
 import SchoolStore from './store/SchoolStore';
+import InfoStore from './store/InfoStore';
 
 export const Context = createContext(null)
 
 ReactDOM.render(
   <Context.Provider value={{
     user : new UserStore( ) ,
-    school : new SchoolStore( )
+    school : new SchoolStore( ),
+    info: new InfoStore( )
   }}>
     <App />
   </Context.Provider>,

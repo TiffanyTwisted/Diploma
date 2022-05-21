@@ -1,26 +1,30 @@
 import React, {useState, useEffect, useContext} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {Button} from "react-bootstrap"
 import {Container} from 'react-bootstrap';
 import CreateSchool from '../components/modals/CreateSchool.js';
 import CreateEvent from '../components/modals/CreateEvent.js';
 import CreateCourse from '../components/modals/CreateCourse.js';
+import CreateNews from '../components/modals/CreateNews.js';
 import UpdateRecord from '../components/modals/UpdateRecord.js';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {observer} from "mobx-react-lite"
 import {Context} from '../index';
 import {fetchAllRecords} from '../http/recordAPI';
-import Table from 'react-bootstrap/Table';
 import {fetchCourses} from '../http/courseApi';
 import {fetchSchools} from '../http/schoolApi';
 import { NavLink } from 'react-bootstrap';
+import { RECORD_MANAGEMENT } from '../utills/constants.js';
 
 const Admin = observer( () => {
     const [schoolVisible, setSchoolVisible] = useState(false)
     const [eventVisible, setEventVisible]   = useState(false)
     const [courseVisible, setCourseVisible] = useState(false)
-    const [recordVisible, setRecordVisible] = useState(false)
     const [biblioVisible, setBiblioVisible] = useState(false)
+    const [newsVisible, setNewsVisible]     = useState(false)
+    
+    const navigate = useNavigate()
 
     const {school, user} = useContext(Context)
     const user_id = user.user.id
@@ -38,11 +42,6 @@ const Admin = observer( () => {
   }, [])
   console.log(school.schools)
 
-    const recordsArray = school.records
-    const schoolsArray = school.schools
-    const coursesArray = school.courses
-    let school_id 
-   
 
 
     return (
@@ -97,57 +96,14 @@ const Admin = observer( () => {
             <Col><Button className='mt-4 p-2'  variant='danger'> Удалить файл </Button></Col>
             </Row>
             <Row className="d-flex align-items-center mt-4">
+            <h4>Работа с новостями</h4>    
+            <Col><Button className='mt-4 p-2' variant='success'  onClick={() => setNewsVisible(true)}>Создать новость</Button></Col>
+            <Col><Button className='mt-4 p-2' variant='danger'>Удалить новость</Button></Col>
+            </Row>
+            <Row className="d-flex align-items-center mt-4">
             <h4>Работа с заявками</h4>    
-            <Table striped bordered hover className='mt-4'>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Название курса</th>
-                    <th>Название школы</th>
-                    <th>ID школьника</th>
-                    <th>Статус заявки</th>
-                    <th></th>
-
-                </tr>
-            </thead>
-            <tbody> {
-                recordsArray.map((record, index) => <tr>
-                    <td>{
-                        index + 1
-                    }</td>
-                    <td>{
-                        coursesArray.map(item => {
-                            if (item.id == record.CourseId) {
-                                school_id = item.SchoolId
-                                return item.course_name
-                            }
-                        })
-                    }</td>
-                    <td>{
-                        schoolsArray.map(item => {
-                            if (item.id == school_id) {
-                                return item.school_name
-                            } 
-                        })
-                    }</td>
-                     <td>{
-                         record.UserId
-                    }</td>
-                    <td> {
-                        record.is_actived
-                    }</td>
-                     <td>         
-                       <Button key={index} className='mt-4 p-2' onClick={() => {   setRecordVisible(true)}} >Выбрать</Button> 
-                    </td>
-                    <UpdateRecord show={recordVisible}
-                onHide={
-                    () => setRecordVisible(false)
-                }
-                index={index}/>
-                </tr>)
-                
-            } </tbody>
-        </Table>
+            <Col><Button className='mt-4 p-2' onClick={()=>navigate(RECORD_MANAGEMENT)}>Запись на курсы </Button></Col>
+            <Col><Button className='mt-4 p-2'>Запись на мероприятия </Button></Col>
             </Row>
             <CreateSchool show={schoolVisible}
                 onHide={
@@ -161,8 +117,11 @@ const Admin = observer( () => {
                 onHide={
                     () => setCourseVisible(false)
                 }/>
+               < CreateNews show={newsVisible}
+                onHide={
+                    () => setNewsVisible(false)
+                }/>
 
-    
         </Container>
     );
 

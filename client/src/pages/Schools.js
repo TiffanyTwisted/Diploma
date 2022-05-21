@@ -18,6 +18,7 @@ const SchoolPage = observer(( ) => {
                       <MenuBar/>
                   </Col>
                   <Col md={9}>
+                  <h2 className='mt-3'>Школы Юных БГУ</h2>
                       <SchoolList/>
                   </Col>
 

@@ -9,6 +9,8 @@ const CreateSchool =  observer( ({show, onHide}) => {
 
     const [school_name, setSchoolName] = useState('')
     const [school_description, setSchoolDescription] = useState('')
+    const [phone, setPhone] = useState('')
+    const [link, setLink] = useState('')
     const [file_name, setFile] = useState('')
 
     const selectFile = e => {
@@ -20,6 +22,8 @@ const CreateSchool =  observer( ({show, onHide}) => {
         console.log(school_name, school_description, file_name)
         formData.append('school_name',school_name )
         formData.append('school_description',school_description )
+        formData.append('phone', phone ) 
+        formData.append('link', link)
         formData.append('img', file_name)
         createSchool(formData).then( data => onHide())
     }
@@ -47,6 +51,16 @@ const CreateSchool =  observer( ({show, onHide}) => {
                 value={school_description}
                 onChange={e => setSchoolDescription(e.target.value)}
                 placeholder='Введите описание школы'/>  
+                 <Form.Control
+                className='mt-2'
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder='Введите номер для справки'/>  
+                 <Form.Control
+                className='mt-2'
+                value={link}
+                onChange={e => setLink(e.target.value)}
+                placeholder='Введите ссылку на школу Юных'/>  
                <Form.Control   className='mt-2' onChange={selectFile} type='file'/>  
                </Form>
             </Modal.Body>

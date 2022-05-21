@@ -18,6 +18,7 @@ const CourseItem = ({course}) => {
             <Card style={
                     {
                         width: 350,
+                        height:450, 
                         cursor: 'pointer',
                         borderRadius: 20
                     }
@@ -41,8 +42,9 @@ const CourseItem = ({course}) => {
                         course.course_name
                     }</CardTitle>
                     <CardText>{
-                       course.course_description
-                    }</CardText>
+                       course.course_description  > 160 ?  course.course_description .substring(0, 160)+ '...' : 
+                       course.course_description 
+                    } </CardText>
                     <Button variant="info">Читать дальше</Button>
                 </CardBody>
             </Card>

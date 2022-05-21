@@ -4,7 +4,7 @@ const uuid = require('uuid')
 const path = require('path')
 
 class courseController {
-    async createCourse(req, res) {
+    async createCourse(req, res, next) {
         try {
             const {course_name, course_description, SchoolId} = req.body;
             const {img} = req.files;

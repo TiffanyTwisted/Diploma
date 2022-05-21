@@ -1,8 +1,16 @@
 import React from 'react';
-import {Col, Card} from 'react-bootstrap';
+import {Col} from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import { useNavigate } from 'react-router-dom';
 import { EVENT_ROUTE} from '../utills/constants';
+import {Button} from "react-bootstrap"
+import {
+    Card,
+    CardBody,
+    CardImg,
+    CardText,
+    CardTitle
+} from "reactstrap";
 
 const EventItem = ({event}) => {
     const history = useNavigate();
@@ -11,19 +19,28 @@ const EventItem = ({event}) => {
             <Card style={
                     {
                         width: 350,
-                        cursor: 'pointer',
-                        height: 250
+                        cursor: 'pointer'
                     }
                 }
                 boreder={"light"}
                 className='mt-3'>
-                <Image width={250}
-                    height={200}
-                    src={
-                        event.img
-                    }/>
-                <div>{event.event_name}</div>
-                <div>{event.event_description}</div>
+         <CardImg width={250}
+                height={200}
+                src={
+                    process.env.REACT_APP_API_URL + event.img
+                }/>
+            <CardBody className="p-4">
+                <CardTitle tag="h5"> {
+                   event.event_name
+                }</CardTitle>
+                <CardText> {
+                    event.event_description.length > 120 ? event.event_description.substring(0, 120) + '...' : event.event_description
+                }</CardText>
+                <Button variant="info"
+                    onClick={
+                        () => history(EVENT_ROUTE + '/' + event.id)
+                }>Читать дальше</Button>
+            </CardBody>
             </Card>
         </Col>
     );

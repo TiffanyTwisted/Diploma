@@ -4,14 +4,19 @@ const path = require('path')
 const ApiError = require('../error/ApiError');
 
 class eventController {
-    async createEvent(req, res) {
+    async createEvent(req, res, next) {
         try {
-            const {event_name, event_description, SchoolId} = req.body;
+            const {event_name, event_description, SchoolId, is_registrated} = req.body;
             const {img} = req.files;
             let fileName = uuid.v4() + ".jpg"
             img.mv(path.resolve(__dirname, '..', 'static', fileName));
 
-            const event = await Event.create({event_name, event_description, SchoolId, img: fileName});
+            if(!is_registrated){
+                is_registrated =  false
+            }
+
+            const event = await Event.create({event_name, event_description, SchoolId, img: fileName, is_registrated});
+            console.log(event)
             return res.json(event)
         } catch (error) {
             next(ApiError.badRequest(error.message))

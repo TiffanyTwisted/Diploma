@@ -3,7 +3,6 @@ import {observer} from "mobx-react-lite"
 import {Context} from '../index';
 import {fetchRecordsByUserId} from '../http/recordAPI';
 import Table from 'react-bootstrap/Table';
-import TableItem from './TableItem';
 import {fetchCourses} from '../http/courseApi';
 import {fetchSchools} from '../http/schoolApi';
 import { NavLink } from 'react-bootstrap';
@@ -30,7 +29,6 @@ const StatusTable = observer(() => {
 
     const recordsArray = school.records
     const schoolsArray = school.schools
-    console.log(  schoolsArray)
     const coursesArray = school.courses
     let school_id 
    

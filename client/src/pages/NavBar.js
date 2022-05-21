@@ -8,6 +8,7 @@ import {Button} from "react-bootstrap"
 import styles from "../styles/NavBar.css"
 import {useNavigate} from 'react-router-dom';
 import {observer} from 'mobx-react-lite';
+import { Icon } from '@material-ui/core';
 
 const NavBarPanel = observer(() => {
     const {user} = useContext(Context)
@@ -34,7 +35,7 @@ const NavBarPanel = observer(() => {
                 <div style={
                     styles.header
                 }>
-                    <h3 className='ml-50'>Образовательный портал</h3>
+                    <Icon src=''></Icon><h5 className='ml-50'>Образовательный портал Школа Юных БГУ</h5>
                 </div>
             </NavLink>
             {

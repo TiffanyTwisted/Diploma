@@ -7,17 +7,17 @@ export const createRecord = async (record) => {
 }
 
 export const changeStatusToInProcess = async (record) => {
-    const {data} = await $host.post('api/record/process', record)
+    const {data} = await $host.put('api/record/process', record)
     return data
 }
 
 export const changeStatusToApproved = async (record) => {
-    const {data} = await $host.post('api/record/approve', record)
+    const {data} = await $host.put('api/record/approve', record)
     return data
 }
 
 export const changeStatusToCanceled = async (record) => {
-    const {data} = await $host.post('api/record/cancel', record)
+    const {data} = await $host.put('api/record/cancel', record)
     return data
 }
 

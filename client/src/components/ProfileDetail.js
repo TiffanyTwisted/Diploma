@@ -13,6 +13,7 @@ import Image from 'react-bootstrap/Image';
 import { observer } from 'mobx-react-lite';
 import { readUserInfo } from '../http/userAPI';
 import StatusTable from '../components/StatusTable'  
+import EventStatusTable from './EventStatusTable.js';
 
 const ProfilePage = observer( () => {
     const [userInfo, setUserInfo] = useState({ })
@@ -23,10 +24,11 @@ console.log(userInfo)
     useEffect(()=>{
       readUserInfo( user.user.id ).then(data => {setUserInfo(data) } )
   }, [])
+  
 
     return (
         <Container>
-           <Card>
+           <Card className='mt-3 p-3'>
              <div className='d-flex justify-content-center'>
                  <Image className='mt-3'
                   style={ 
@@ -40,12 +42,16 @@ console.log(userInfo)
                  <CardTitle className='d-flex justify-content-center mt-2'><h3>
                    {
                      userInfo.user === undefined ? 
-                     'Name' : 
-                     userInfo.user.first_name + ' ' + userInfo.user.middle_name + ' ' + userInfo.user.last_name
+                     'John Joe' :
+                      userInfo.user.middle_name === null ?
+                      userInfo.user.first_name +  ' ' + userInfo.user.last_name : 
+                      userInfo.user.first_name + ' ' + userInfo.user.middle_name + ' ' + userInfo.user.last_name                  
+                     
                    }</h3></CardTitle>
                  <CardBody>
                    <h4>Мои заявки</h4>
                    <StatusTable/>
+                   <EventStatusTable/>
                  </CardBody>
            </Card>
         </Container>
@@ -57,4 +63,5 @@ export default ProfilePage;
 { photoLink != null ? 
   <CardImg width={50}
   height={50}
-src={user.photo}/> :*/
+src={user.photo}/> :
+<EventStatusTable/>*/

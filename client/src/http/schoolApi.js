@@ -2,7 +2,7 @@ import { $authHost, $host } from ".";
 import jwt_decode from 'jwt-decode'
 
 export const createSchool = async (school) => {
-    const {data} = await $authHost.post('api/school', school)
+    const {data} = await $host.post('api/school', school)
     return data
 }
 

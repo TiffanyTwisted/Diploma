@@ -10,14 +10,11 @@ class biblioController {
             const {file} = req.files;
             let prefix
 
-            if (file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                prefix = '.docx'
-            }  prefix = '.txt'
-            let fileName = uuid.v4() + prefix
-            file.mv(path.resolve(__dirname, '..', 'static', fileName))
+            let fileName = file.name
+            file.mv(path.resolve(__dirname, '..', 'files', fileName))
             console.log(file)
 
-            const biblio = await Biblio.create({title, SchoolId, file: fileName})
+            const biblio = await Biblio.create({title, SchoolId, file_name: fileName, file:file})
             return res.json(biblio)
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -42,6 +39,8 @@ class biblioController {
 
         return res.json(biblio)
     }
+
+   
 }
 
 module.exports = new biblioController()

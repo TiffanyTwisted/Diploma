@@ -4,11 +4,13 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import {Context} from '../index';
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'sassy-datepicker';
 
 const MenuBar = observer(( ) => {
-    const {school} = useContext(Context);
+    const {school, user} = useContext(Context);
     const navigate = useNavigate();
     return (
+        <>
     <ListGroup className='mt-3 border border-primary rounded-top'>  
         { school.menuitems.map(menuitem => 
         <NavLink onClick={() => navigate(menuitem.path)} to={menuitem.path} activeStyle={{
@@ -24,7 +26,9 @@ const MenuBar = observer(( ) => {
        >
            {menuitem.name}
            </ListGroup.Item></NavLink>   )} 
-    </ListGroup> )
+    </ListGroup> 
+     <DatePicker className='mt-5'/>
+    </>)
 });
 
 export default MenuBar;

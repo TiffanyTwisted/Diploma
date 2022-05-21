@@ -12,6 +12,7 @@ const EventsPage = () => {
                 <MenuBar/>
             </Col>
             <Col md={9}>
+            <h2 className='mt-3'>Мероприятия БГУ</h2>
                 <EventsList/>
             </Col>
         </Row>

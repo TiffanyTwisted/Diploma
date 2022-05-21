@@ -29,6 +29,14 @@ class newsController {
 
         return res.json(news)
     }
+
+    async getNewsByID(req, res) {
+        const {id} = req.params
+        const news = await News.findOne({where: {
+                id
+            }})
+        return res.json(news)
+    }
 }
 
 module.exports = new newsController()

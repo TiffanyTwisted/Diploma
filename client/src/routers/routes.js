@@ -13,15 +13,18 @@ import {
     MAIN_ROUTE,
     PROFILE_ROUTE,
     REGISTRATION_ROUTE,
-    SCHOOL_ROUTE
+    RECORD_MANAGEMENT, 
+    SCHOOL_ROUTE,
+    BIBLIO_ROUTE
 } from "../utills/constants"
-import Registration from "../pages/Registration"
 import EventsPage from "../pages/EventsPage"
 import EventItemPage from "../pages/EventItemPage"
 import ProfilePage from "../pages/Profile"
 import CourseItemPage from "../pages/CourseItemPage"
-import SignUp from "../components/SignUp"
-import SignIn from "../components/SignIn"
+import RecordManagement from "../pages/RecordManagement "
+import BiblioPage from "../pages/BiblioPage"
+import NewsItemPage from "../pages/NewsItemPage"
+
 
 export const authRoutes = [{
         path: ADMIN_ROUTE,
@@ -29,7 +32,16 @@ export const authRoutes = [{
     }, {
         path: PROFILE_ROUTE,
         Component: ProfilePage
-    }]
+    }, 
+    {
+        path: RECORD_MANAGEMENT, 
+        Component : RecordManagement
+    },
+    {
+        path: BIBLIO_ROUTE, 
+        Component : BiblioPage
+    }
+]
 
 export const publicRoutes = [
     {
@@ -39,6 +51,10 @@ export const publicRoutes = [
     {
         path: MAIN_ROUTE,
         Component: Main
+    },
+    {
+        path: MAIN_ROUTE + '/:id',
+        Component: NewsItemPage
     },
     {
         path: REGISTRATION_ROUTE,

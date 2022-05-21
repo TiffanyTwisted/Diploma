@@ -30,7 +30,7 @@ const User = sequelize.define('User', {
     roles: {
         type: DataTypes.STRING,
         defaultValue: "student",
-        enum: ["student", "teacher", "manager"]
+        enum: ["student", "manager"]
     },
     photo: {
         type: DataTypes.BLOB,
@@ -59,7 +59,7 @@ const Course = sequelize.define('Course', {
         type: DataTypes.STRING
     },
     course_description: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
     },
     img: {
         type: DataTypes.STRING,
@@ -77,6 +77,12 @@ const School = sequelize.define('School', {
         type: DataTypes.STRING
     },
     school_description: {
+        type: DataTypes.TEXT
+    },
+    phone:{
+        type: DataTypes.STRING
+    },
+    link:{
         type: DataTypes.STRING
     },
     img: {
@@ -85,26 +91,6 @@ const School = sequelize.define('School', {
     }
 });
 
-const SchoolTeacher = sequelize.define('SchoolTeacher', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    first_name: {
-        type: DataTypes.STRING
-    },
-    middle_name: {
-        type: DataTypes.STRING
-    },
-    last_name: {
-        type: DataTypes.STRING
-    }, 
-    img: {
-        type: DataTypes.STRING,
-        allowNull: true
-    }
-});
 
 const Event = sequelize.define('Event', {
     id: {
@@ -116,7 +102,11 @@ const Event = sequelize.define('Event', {
         type: DataTypes.STRING
     },
     event_description: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
+    },
+    is_registrated:{
+        type: DataTypes.BOOLEAN,
+        allowNull: true
     },
     img: {
         type: DataTypes.STRING,
@@ -139,7 +129,7 @@ const News = sequelize.define('News', {
         allowNull: true
     }, 
     summary:{
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
     }, 
     img: {
@@ -168,9 +158,12 @@ const Biblio = sequelize.define('Biblio', {
     title:{
         type: DataTypes.STRING
     }, 
-    file: {
+    file_name: {
         type: DataTypes.STRING
-    }
+    },
+    file: {
+        type: DataTypes.BLOB
+    },
 });
 
 // Reference
@@ -186,14 +179,8 @@ CourseUser.belongsTo(Course)
 School.hasMany(Course)
 Course.belongsTo(School)
 
-School.hasMany(Event)
-Event.belongsTo(School)
-
 Event.hasMany(EventUser)
 EventUser.belongsTo(Event)
-
-School.hasMany(SchoolTeacher)
-SchoolTeacher.belongsTo(School)
 
 School.hasMany(Biblio)
 Biblio.belongsTo(School)
@@ -206,6 +193,5 @@ module.exports = {
     Event,
     News,
     EventUser, 
-    School,
-    SchoolTeacher
+    School
 }

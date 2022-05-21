@@ -6,12 +6,12 @@ const ApiError = require('../error/ApiError');
 class schoolController {
     async createSchool(req, res, next) {
         try {
-            const {school_name, school_description} = req.body;
+            const {school_name, school_description, phone, link} = req.body;
             const {img} = req.files;
             let fileName = uuid.v4() + ".jpg"
             img.mv(path.resolve(__dirname, '..', 'static', fileName))
 
-            const school = await School.create({school_name, school_description, img: fileName})
+            const school = await School.create({school_name, school_description, img: fileName, phone, link})
 
             return res.json(school)
         } catch (error) {
