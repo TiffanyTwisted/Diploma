@@ -5,11 +5,16 @@ const ApiError = require('../error/ApiError');
 
 class schoolController {
     async createSchool(req, res, next) {
+        let fileName
         try {
             const {school_name, school_description, phone, link} = req.body;
             const {img} = req.files;
-            let fileName = uuid.v4() + ".jpg"
-            img.mv(path.resolve(__dirname, '..', 'static', fileName))
+            if (!img){
+               fileName = ''
+            } else {
+                fileName = uuid.v4() + ".jpg"
+                img.mv(path.resolve(__dirname, '..', 'static', fileName))
+            }
 
             const school = await School.create({school_name, school_description, img: fileName, phone, link})
 
@@ -32,15 +37,12 @@ class schoolController {
     }
     async updateSchoolInfo(req, res, next) {
         try { // Constants
-            const {school_description} = req.body;
-            const {id} = req.params
-            const {img} = req.files;
-            let fileName = uuid.v4() + ".jpg"
-            img.mv(path.resolve(__dirname, '..', 'static', fileName))
-
+            const {school_description, school_name, id} = req.body;
+            //const {id} = req.params
+            console.log("Вывод", school_description, school_name, id)
             const school = await School.update({
-                school_description,
-                img: fileName
+                school_description : school_description,
+                school_name :  school_name
             }, {where: {
                     id
                 }})
@@ -55,7 +57,27 @@ class schoolController {
         }
 
     }
-    async deleteSchool(req, res) {}
+    async deleteSchoolByID(req, res, next){
+        try {
+        let school
+        let is_deleted
+        const {id} = req.params
+        const record = await School.findOne({where: {
+            id
+        }})
+        if( record !== null){
+            school = await School.destroy({where: {
+                id
+            }})
+        }
+        if( school !== null){
+            is_deleted = `Запись с id = ${id} была удалена`
+        } 
+        return res.json(is_deleted)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+    }
 }
 
 module.exports = new schoolController()

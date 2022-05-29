@@ -3,7 +3,7 @@ import {Context} from '..';
 import Navbar from "react-bootstrap/Navbar"
 import Nav from "react-bootstrap/Nav"
 import {NavLink, useLocation} from "react-router-dom";
-import {MAIN_ROUTE, PROFILE_ROUTE, ADMIN_ROUTE, LOGIN_ROUTE} from '../utills/constants'
+import {MAIN_ROUTE, PROFILE_ROUTE, ADMIN_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from '../utills/constants'
 import {Button} from "react-bootstrap"
 import styles from "../styles/NavBar.css"
 import {useNavigate} from 'react-router-dom';
@@ -64,14 +64,25 @@ const NavBarPanel = observer(() => {
                     onClick={
                         () => logOut()
                 }>Выйти</Button>
-            </Nav> : <Nav className="me-auto">
+            </Nav> : 
+            currentLocation === LOGIN_ROUTE ?
+            <Nav className="me-auto">
+                <Button style={
+                        styles.menuItem
+                    }
+                    onClick={
+                        () => navigate(REGISTRATION_ROUTE)
+                    }
+                    variant={"outline-info"}>Зарегистрироваться</Button>
+            </Nav> : 
+                <Nav className="me-auto">
                 <Button style={
                         styles.menuItem
                     }
                     onClick={
                         () => navigate(LOGIN_ROUTE)
                     }
-                    variant={"outline-info"}>Зарегистрироваться</Button>
+                    variant={"outline-info"}>Войти</Button>
             </Nav>
         } </Navbar>
     )

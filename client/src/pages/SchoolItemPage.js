@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Container, Row, Col } from 'react-bootstrap';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 import MenuBar from '../components/Menu';
 import {Context} from '../index';
 import CourseList from '../components/CourseList';
@@ -19,10 +19,13 @@ const SchoolItemPage = observer( ( ) => {
     const [schoolItem, setSchoolItem] = useState({ })
     const {school} = useContext(Context)
     const school_id = useParams()  // return school id from URL
+    let linkItem 
 
     useEffect(()=>{
         fetchOneSchool( school_id.id ).then(data => setSchoolItem(data))
     }, [])
+
+    linkItem = String( schoolItem.link ) 
     
         return (
             <Container>
@@ -64,6 +67,16 @@ const SchoolItemPage = observer( ( ) => {
                     process.env.REACT_APP_API_URL + schoolItem.img
                 } ></Image>
                     </Col>
+                    <Row className='mt-2'>
+                       {
+                           schoolItem.phone ? <div><b>Телефон: </b>{schoolItem.phone}</div> : <></>
+                       }
+                    </Row>
+                    <Row className='mt-2'>
+                       {
+                           schoolItem.link ? <div><b>Email: </b><a href={linkItem}>{linkItem}</a></div> : <></>
+                       }
+                    </Row>
                     </Row>
                 </CardBody>
             </Card> </Row>  

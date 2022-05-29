@@ -7,5 +7,6 @@ export const EVENT_ROUTE = '/events'
 export const PROFILE_ROUTE ='/profile'
 export const COURSE_ROUTE = '/courses'
 export const RECORD_MANAGEMENT = '/recordmanage'
+export const EVENT_RECORD_MANAGEMENT = '/eventrecordmanage'
 export const BIBLIO_ROUTE = '/biblio'
 

@@ -1,5 +1,5 @@
 import React,{useContext, useState, useEffect} from 'react';
-import { Col, Container, Row} from 'react-bootstrap';
+import { Col, Container, Row, Form} from 'react-bootstrap';
 import {Context} from '../index.js';
 import {
     Card,
@@ -39,7 +39,9 @@ console.log(userInfo)
                  }
                  src="https://demos.wrappixel.com/free-admin-templates/react/materialpro-react-free/main/static/media/user4.6ac95ef9.jpg"/>
                  </div>
-                 <CardTitle className='d-flex justify-content-center mt-2'><h3>
+                 <CardTitle  className='d-flex justify-content-center mt-2'>
+
+                   <h3>
                    {
                      userInfo.user === undefined ? 
                      'John Joe' :
@@ -47,7 +49,8 @@ console.log(userInfo)
                       userInfo.user.first_name +  ' ' + userInfo.user.last_name : 
                       userInfo.user.first_name + ' ' + userInfo.user.middle_name + ' ' + userInfo.user.last_name                  
                      
-                   }</h3></CardTitle>
+                   }</h3>
+                   </CardTitle>
                  <CardBody>
                    <h4>Мои заявки</h4>
                    <StatusTable/>

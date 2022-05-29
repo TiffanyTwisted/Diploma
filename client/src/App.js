@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import './App.css';
 import {Routes, Route, BrowserRouter as Router} from "react-router-dom";
-import NavBar from "./pages/NavBar"
+import NavBar from "./components/NavBar"
 import AppRouter from "./routers/AppRouter";
 import {observer} from "mobx-react-lite";
 import {Context} from ".";

@@ -9,6 +9,7 @@ class recordController {
         try {
             const {UserId, CourseId} = req.body
             const isActived = process.env.NEW_ENTRY
+            console.log(isActived)
             const record = await CourseUser.create({UserId, CourseId, is_actived: isActived});
             return res.json(record)
         } catch (error) {
@@ -125,6 +126,41 @@ class recordController {
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
+    }
+
+    async deleteRecordByID(req, res, next){
+        try {
+        let count
+        let is_deleted
+        const {id} = req.params
+        const record = await CourseUser.findOne({where: {
+            id
+        }})
+        if( record !== null){
+             count = await CourseUser.destroy({where: {
+                id
+            }})
+        }
+        if( count !== null){
+            is_deleted = `Запись с id = ${id} была удалена`
+        } 
+        return res.json(is_deleted)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+    }
+
+    async getRecordByID (req, res, next){
+        try {
+        let count
+        const {id} = req.params
+        const record = await CourseUser.findOne({where: {
+            id
+        }})
+        return res.json(record)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
     }
 }
 

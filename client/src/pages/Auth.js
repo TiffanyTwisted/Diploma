@@ -23,7 +23,8 @@ const Auth = observer(() => {
     const [first_name, setFirstName ] = useState();
     const [middle_name, setMiddleName ] = useState();
     const [last_name, setLastName ] = useState();
-    const [showHide, show] = useState(false)
+    const [showHide, setShow] = useState(false)
+    const [error, setError] = useState()
     let error_text;
 
     const click = async () => {
@@ -42,7 +43,10 @@ const Auth = observer(() => {
             navigate(MAIN_ROUTE)
         } catch (error) {
             error_text = error.response.data.message
-            show(true)
+            console.log(error_text)
+            setError(error_text )
+            setShow(true)
+            console.log( error_text)
         }
 
 
@@ -116,7 +120,7 @@ const Auth = observer(() => {
                              onChange={
                                  e => setLastName(e.target.value) }></Form.Control>
                         </div>
-                        {  showHide  ? <p className='text-danger'>Ошибка</p> : <></>  }
+                        {  showHide  === true ? <p className='text-danger'>{error}</p> : <></>  }
                     </>
                 } </Form>
                 <div className="d-flex justify-content-between mt-3 align-items-center">

@@ -40,6 +40,29 @@ class biblioController {
         return res.json(biblio)
     }
 
+    async deleteBiblioById(req, res, next){
+            try {
+            let file
+            let is_deleted
+            const {id} = req.params
+            const record = await Biblio.findOne({where: {
+                id
+            }})
+            if( record !== null){
+                 file = await Biblio.destroy({where: {
+                    id
+                }})
+            }
+            if( file !== null){
+                is_deleted = `Запись с id = ${id} была удалена`
+            } 
+            return res.json(is_deleted)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+          
+    }
+
    
 }
 

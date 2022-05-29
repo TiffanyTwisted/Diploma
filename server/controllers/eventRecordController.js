@@ -16,6 +16,14 @@ class eventRecordController {
         }
     }
 
+    async getRecordByID(req, res) {
+        const {id} = req.params
+        const record = await EventUser.findOne({where: {
+                id
+            }})
+        return res.json(record)
+    }
+
     async getAllRecords(req, res, next) {
 
         try {
@@ -126,6 +134,28 @@ class eventRecordController {
             next(ApiError.badRequest(error.message))
         }
     }
+
+    async deleteRecordByID(req, res, next){
+        try {
+        let entry
+        let is_deleted
+        const {id} = req.params
+        const record = await EventUser.findOne({where: {
+            id
+        }})
+        if( record !== null){
+            entry = await EventUser.destroy({where: {
+                id
+            }})
+        }
+        if( entry !== null){
+            is_deleted = `Запись с id = ${id} была удалена`
+        } 
+        return res.json(is_deleted)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+}
 }
 
 module.exports = new eventRecordController()

@@ -14,6 +14,7 @@ import {
     PROFILE_ROUTE,
     REGISTRATION_ROUTE,
     RECORD_MANAGEMENT, 
+    EVENT_RECORD_MANAGEMENT, 
     SCHOOL_ROUTE,
     BIBLIO_ROUTE
 } from "../utills/constants"
@@ -22,6 +23,7 @@ import EventItemPage from "../pages/EventItemPage"
 import ProfilePage from "../pages/Profile"
 import CourseItemPage from "../pages/CourseItemPage"
 import RecordManagement from "../pages/RecordManagement "
+import EventRecordManagement from "../pages/EventRecordManagement "
 import BiblioPage from "../pages/BiblioPage"
 import NewsItemPage from "../pages/NewsItemPage"
 
@@ -36,6 +38,10 @@ export const authRoutes = [{
     {
         path: RECORD_MANAGEMENT, 
         Component : RecordManagement
+    },
+    {
+        path: EVENT_RECORD_MANAGEMENT, 
+        Component : EventRecordManagement
     },
     {
         path: BIBLIO_ROUTE, 

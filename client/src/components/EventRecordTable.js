@@ -3,10 +3,9 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import {observer} from "mobx-react-lite"
 import {toJS} from 'mobx';
 import {Context} from '../index';
-import {fetchAllRecords} from '../http/recordAPI';
-import {fetchCourses} from '../http/courseApi';
-import {fetchSchools} from '../http/schoolApi';
-import UpdateRecord from './modals/UpdateRecord'
+import {fetchAllRecords} from '../http/eventRecordAPI';
+import {fetchEvents} from '../http/eventAPI';
+import UpdateEventRecord from './modals/UpdateEventRecord'
 
 const columns = [
     {
@@ -14,12 +13,8 @@ const columns = [
         text: ''
     },
     {
-        dataField: 'CourseName',
-        text: 'Название курса'
-    },
-    {
-        dataField: 'SchoolName',
-        text: 'Название школы'
+        dataField: 'EventName',
+        text: 'Название мероприятия'
     },
     {
         dataField: 'UserId',
@@ -35,7 +30,7 @@ const cellEdit = {
     mode: 'click'
 };
 
-const RecordTable = observer(() => {
+const EventRecordTable = observer(() => {
     const {school, user} = useContext(Context)
     const [recordVisible, setRecordVisible] = useState(false)
     const [recordItem, setRecordItem] = useState({})
@@ -51,20 +46,15 @@ const RecordTable = observer(() => {
 
     // Fill data from Storage
     useEffect(() => {
-        fetchAllRecords().then(data => school.setRecords(data.rows))
+        fetchAllRecords().then(data => school.setEventRecords(data.rows))
     }, [])
 
     useEffect(() => {
-        fetchCourses().then(data => school.setCourses(data.rows))
+        fetchEvents().then(data => school.setEvents(data.rows))
     }, [])
 
-    useEffect(() => {
-        fetchSchools().then(data => school.setSchool(data))
-    }, [])
-
-    let recordsArray   = toJS(school.records)
-    const schoolsArray = toJS(school.schools)
-    const coursesArray = toJS(school.courses)
+    let recordsArray   = toJS(school.eventrecords)
+    const eventsArray = toJS(school.events)
 
     recordsArray = recordsArray.filter(function (el) {
         return (el != null && el != "" || el === 0);
@@ -72,27 +62,20 @@ const RecordTable = observer(() => {
 
     // Summary of arrays
     let data = recordsArray.map((record, index) => {
-        let coursedata = coursesArray.find(course => {
-            if (course !== undefined && course.id === record.CourseId) {
-                return course.course_name
-            }
-        })
-        let schooldata = schoolsArray.find(school => {
-            if (coursedata !== undefined && school !== undefined && school.id === coursedata.SchoolId) {
-                return school.school_name
+        let eventdata = eventsArray.find(event => {
+            if (event !== undefined && event.id === record.EventId) {
+                return event.event_name
             }
         })
         let properties
-        if (coursedata !== undefined && 
-            schooldata !== undefined && 
+        if (eventdata  !== undefined && 
             record     !== undefined ) {
             properties = {
                 "id": index + 1,
-                "CourseId": record.CourseId,
+                "EventId": record.EventId,
                 "is_actived": record.is_actived,
                 "UserId": record.UserId,
-                "CourseName": coursedata.course_name,
-                "SchoolName": schooldata.school_name
+                "EventName": eventdata.event_name
             };
         }
         return properties;
@@ -104,7 +87,7 @@ const RecordTable = observer(() => {
         data={data}
         columns={columns}
         selectRow={selectRow}/>
-          <UpdateRecord show={recordVisible}
+          <UpdateEventRecord show={recordVisible}
                         onHide={
                             () => setRecordVisible(false)
                         }
@@ -113,4 +96,4 @@ const RecordTable = observer(() => {
         </>
         )
 })
-export default RecordTable;
+export default EventRecordTable;

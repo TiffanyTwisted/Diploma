@@ -84,7 +84,9 @@ class courseController {
                 records = await CourseUser.findAndCountAll({where: {
                         UserId
                     }, limit, offset})
-            } else {  records = await CourseUser.findAndCountAll({ limit, offset}) } 
+            } else {
+                records = await CourseUser.findAndCountAll({limit, offset})
+            }
             return res.json(records)
         } catch (error) {
             next(ApiError.badRequest(error.message))
@@ -96,18 +98,23 @@ class courseController {
             const {CourseId, UserId} = req.body
 
             if (UserId && CourseId) {
-               const record = await CourseUser.update({ 
-                   is_actived: process.env.IN_PROCESS
-                }, { where: {
+                const record = await CourseUser.update({
+                    is_actived: process.env.IN_PROCESS
+                }, {
+                    where: {
                         UserId,
                         CourseId
-                    } }
-                )
-            }  else {   next(ApiError.badRequest("Заявка не была найдена")) } 
-            const updatedRecord = await  CourseUser.findOne({where: {
-                UserId,
-                CourseId
-            }})
+                    }
+                })
+            } else {
+                next(ApiError.badRequest("Заявка не была найдена"))
+            }
+            const updatedRecord = await CourseUser.findOne({
+                where: {
+                    UserId,
+                    CourseId
+                }
+            })
             return res.json(updatedRecord)
 
         } catch (error) {
@@ -120,18 +127,23 @@ class courseController {
             const {CourseId, UserId} = req.params
 
             if (UserId && CourseId) {
-               const record = await CourseUser.update({ 
-                   is_actived: process.env.APPROVED
-                }, { where: {
+                const record = await CourseUser.update({
+                    is_actived: process.env.APPROVED
+                }, {
+                    where: {
                         UserId,
                         CourseId
-                    } }
-                )
-            }  else {   next(ApiError.badRequest("Заявка не была найдена")) } 
-            const updatedRecord = await  CourseUser.findOne({where: {
-                UserId,
-                CourseId
-            }})
+                    }
+                })
+            } else {
+                next(ApiError.badRequest("Заявка не была найдена"))
+            }
+            const updatedRecord = await CourseUser.findOne({
+                where: {
+                    UserId,
+                    CourseId
+                }
+            })
             return res.json(updatedRecord)
 
         } catch (error) {
@@ -144,24 +156,104 @@ class courseController {
             const {CourseId, UserId} = req.params
 
             if (UserId && CourseId) {
-               const record = await CourseUser.update({ 
-                   is_actived: process.env.CANCELED
-                }, { where: {
+                const record = await CourseUser.update({
+                    is_actived: process.env.CANCELED
+                }, {
+                    where: {
                         UserId,
                         CourseId
-                    } }
-                )
-            }  else {   next(ApiError.badRequest("Заявка не была найдена")) } 
-            const updatedRecord = await  CourseUser.findOne({where: {
-                UserId,
-                CourseId
-            }})
+                    }
+                })
+            } else {
+                next(ApiError.badRequest("Заявка не была найдена"))
+            }
+            const updatedRecord = await CourseUser.findOne({
+                where: {
+                    UserId,
+                    CourseId
+                }
+            })
             return res.json(updatedRecord)
 
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
     }
+
+    async deleteCourseByID(req, res, next) {
+        try {
+            let course
+            let is_deleted
+            const {id} = req.params
+            const record = await Course.findOne({where: {
+                    id
+                }})
+            if (record !== null) {
+                course = await Course.destroy({where: {
+                        id
+                    }})
+            }
+            if (course !== null) {
+                is_deleted = `Запись с id = ${id} была удалена`
+            }
+            return res.json(is_deleted)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+
+    }
+
+    async updateCourseByID(req, res, next) {
+        try {
+            let course
+            const {id} = req.params
+            const { course_name_new,  course_description_new } = req.body;
+            const record = await Course.findOne({where: {
+                    id
+                }})
+            if (!record) {
+                next(ApiError.badRequest(`Запись с id = ${id} не найдена`))
+            }
+
+            if (course_name_new && course_description_new) {
+                course = await Course.update({
+                    course_name: course_name_new, 
+                    course_description : course_description_new
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            } if (!course_name_new && course_description_new) {
+                course = await Course.update({
+                    course_description : course_description_new
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            }
+            if (course_name_new && !course_description_new) {
+                course = await Course.update({
+                    course_description : course_description_new
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            }
+            if( !course ){
+                next(ApiError.badRequest("Ничего не обновилось"))
+            }
+        
+            return res.json(course)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+
+    }
+
+
 }
 
 module.exports = new courseController()

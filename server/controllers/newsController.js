@@ -37,6 +37,83 @@ class newsController {
             }})
         return res.json(news)
     }
+
+    async deleteNewsByID(req, res){
+        const {id} = req.params
+        const count = await News.destroy({where: {
+                id
+            }})
+        return res.json(count)
+    }
+
+    async updateNewsByID(res, req, next){
+        try {
+            let news
+            const {id} = req.params
+            const { pretext, title, summary} = req.body;
+            news = await News.findOne({where: {
+                    id
+                }})
+            if (!news) {
+                next(ApiError.badRequest(`Запись с id = ${id} не найдена`))
+            }
+
+            if (pretext &&  title && summary) {
+                news = await News.update({
+                    pretext : pretext,
+                    title : title,
+                    summary : summary
+
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            } if (!pretext &&  title && summary) {
+                news = await News.update({
+                    title : title,
+                    summary : summary
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            }
+            if (pretext &&  !title && summary) {
+                news = await News.update({
+                    pretext : pretext,
+                    summary : summary
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            }
+
+            if (pretext && title && !summary) {
+                news = await News.update({
+                    pretext : pretext,
+                    title : title,
+                    summary : summary
+
+                }, {
+                    where: {
+                       id
+                    }
+                })
+            }
+
+            if( !news ){
+                next(ApiError.badRequest("Ничего не обновилось"))
+            }
+        
+            return res.json(news)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+
+    }
+
 }
 
 module.exports = new newsController()

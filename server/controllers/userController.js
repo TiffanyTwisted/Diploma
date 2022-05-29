@@ -89,6 +89,49 @@ class userController {
         }
         return res.json({user})
     }
+
+    async deleteUserByID(req, res, next){
+        try {
+        let user
+        let is_deleted
+        const {id} = req.params
+        const record = await User.findOne({where: {
+            id
+        }})
+        if( record !== null){
+            user = await User.destroy({where: {
+                id
+            }})
+        }
+        if( user !== null){
+            is_deleted = `Запись с id = ${id} была удалена`
+        } 
+        return res.json(is_deleted)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+    }
+
+    async changeRoleByIDToManager(req, res){
+        try {
+            let user
+            let is_deleted
+            const {id} = req.params
+            const record = await User.findOne({where: {
+                id
+            }})
+            if( record !== null){
+                user = await User.update({ 
+                    role : process.env.MANAGER
+                 }, { where: {
+                        id
+                     } })
+            } 
+            return res.json(user)
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+    }
 }
 
 module.exports = new userController()
